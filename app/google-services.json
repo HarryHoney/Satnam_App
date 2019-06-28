@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "844004088760",
+    "firebase_url": "https://badmintion-55f94.firebaseio.com",
+    "project_id": "badmintion-55f94",
+    "storage_bucket": "badmintion-55f94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844004088760:android:26cfd6349f22a0c9",
+        "android_client_info": {
+          "package_name": "com.example.harpreet.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844004088760-lg8stjmacl5ubo50ve0ul4jp5f840eal.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.harpreet.myapplication",
+            "certificate_hash": "efe5b968f007b8dc01a5506429c27163a5424d55"
+          }
+        },
+        {
+          "client_id": "844004088760-invg83uuhikrmfu0m7chekgt85rdhlti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT19EH2Toquhhi9j3vX6GSGg-aCrQfDys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844004088760-invg83uuhikrmfu0m7chekgt85rdhlti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
