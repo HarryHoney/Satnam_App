@@ -37,9 +37,9 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //toolbar is been set here
-        login_toolbar=findViewById(R.id.login_toolbar);
-        setSupportActionBar(login_toolbar);
-        getSupportActionBar().setTitle("Login");
+//        login_toolbar=findViewById(R.id.login_toolbar);
+//        setSupportActionBar(login_toolbar);
+//        getSupportActionBar().setTitle("Login");
 
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.cloud);

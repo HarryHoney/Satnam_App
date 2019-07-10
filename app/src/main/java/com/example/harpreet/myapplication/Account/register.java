@@ -27,6 +27,7 @@ public class register extends AppCompatActivity {
     private Button reg_already_acc;
     private EditText reg_email;
     private  EditText reg_password;
+    private EditText reg_name;
     private EditText reg_confirm_password;
     private FirebaseAuth mauth;
     private ProgressBar pp;
@@ -42,6 +43,7 @@ public class register extends AppCompatActivity {
         reg_confirm_password=findViewById(R.id.confirmpassword);
         reg_signup=findViewById(R.id.createbtn);
         reg_already_acc=findViewById(R.id.haveaccbtn);
+        reg_name = findViewById(R.id.user_name);
         pp=findViewById(R.id.progressBar2);
 
         reg_already_acc.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +61,9 @@ public class register extends AppCompatActivity {
                 String mail=reg_email.getText().toString();
                 String Password=reg_password.getText().toString();
                 String confirm_Password=reg_confirm_password.getText().toString();
+                String Name = reg_name.getText().toString();
 
-                if(!TextUtils.isEmpty(mail)&&!TextUtils.isEmpty(Password)&&!TextUtils.isEmpty(confirm_Password))
+                if(!TextUtils.isEmpty(mail)&&!TextUtils.isEmpty(Password)&&!TextUtils.isEmpty(confirm_Password)&&!TextUtils.isEmpty(Name))
                 {
 
                     if(Password.equals(confirm_Password))
@@ -72,6 +75,12 @@ public class register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
+                                    //Now the User is Successfully registered So adding it to Score Board
+                                    FirebaseUser user=mauth.getCurrentUser();
+                                    String id=user.getUid();
+                                    //Add user to DashBoard with Name id matches=0 and points=0
+                                    //Make a call to Nodejs code
+
                                     startActivity(new Intent(register.this,MainActivity.class));
                                     finish();
                                 }

@@ -38,7 +38,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth mauth;
-    android.support.v7.widget.Toolbar main_toolbar;
     //for adapter
     FirebaseFirestore firebaseFirestore =FirebaseFirestore.getInstance();
     public FirebaseAdapter adapter;
@@ -53,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //main_toolbar=findViewById(R.id.toolbar);
-        //setSupportActionBar(main_toolbar);
-        //getSupportActionBar().setTitle("Satnam Academy");
 
         setTitle("Satnam Academy");
 
@@ -92,19 +88,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Create an instant for new match
-                HashMap<String,String> map = new HashMap<>();
-                map.put("name","Vishal");map.put("points","234");
-                firebaseFirestore.collection("Score").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                HashMap<String,String> map = new HashMap<>();
+//                map.put("name","Vishal");map.put("points","0");map.put("user_id",mauth.getUid());map.put("matches","0");
+//                firebaseFirestore.collection("Score").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+                startActivity(new Intent(MainActivity.this,Match.class));
+
             }
 
         });
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth=FirebaseAuth.getInstance();
         CollectionReference reference = firebaseFirestore.collection("/Score");
         Query query = reference
-                .limit(50);
+                .limit(50).orderBy("points",Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Data> options = new FirestoreRecyclerOptions.Builder<Data>().
                 setQuery(query,Data.class)
                 .build();

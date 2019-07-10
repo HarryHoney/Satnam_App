@@ -73,7 +73,7 @@ public class setup extends AppCompatActivity {
             setup_progressbar.setVisibility(View.VISIBLE);
         }
 
-        //if the user is already logged in then we should retrive the data of his profile to display so refering to the same collection and userID
+        //if the user is already logged in then we should retrieve the data of his profile to display so refering to the same collection and userID
         //the below line will only make the connection and will consider as successful is the connection is establised with FireStore
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
