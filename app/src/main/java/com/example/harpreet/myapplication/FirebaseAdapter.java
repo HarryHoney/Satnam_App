@@ -32,7 +32,8 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Data model) {
 
         holder.name.setText(model.getName());
-          holder.points.setText(model.getPoints());
+        holder.points.setText("Points:"+model.getPoints());
+        holder.match.setText("Match:"+model.getMatches());
         //String imagevalue="a"+model.getCurrent_image();
         //     int id=holder.itemView.getResources().getIdentifier(imagevalue,"drawable", MainActivity.PACKAGE_NAME);
         //Drawable res = holder.itemView.getResources().getDrawable(id);
@@ -50,12 +51,14 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
 
         public  TextView name;
         public TextView points;
+        public TextView match;
         public ImageView person_image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             points = itemView.findViewById(R.id.points);
+            match = itemView.findViewById(R.id.match);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

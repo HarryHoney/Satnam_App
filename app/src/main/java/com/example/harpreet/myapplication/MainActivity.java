@@ -88,19 +88,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Create an instant for new match
-//                HashMap<String,String> map = new HashMap<>();
-//                map.put("name","Vishal");map.put("points","0");map.put("user_id",mauth.getUid());map.put("matches","0");
-//                firebaseFirestore.collection("Score").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
                 startActivity(new Intent(MainActivity.this,Match.class));
 

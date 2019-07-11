@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.textclassifier.TextClassification;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.Request;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.w3c.dom.Text;
@@ -32,8 +35,6 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
     DatabaseReference databaseReference;
     iFirebaseLoadDone iFirebaseLoadDone;
     List<Data> List;
-    boolean First1=true;
-    boolean First2=true;
     String firstId="";
     String SecondId="";
     EditText points1;
@@ -48,9 +49,10 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
         searchableSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 Data item = List.get(position);
                 firstId = item.getUser_id();
-                //Toast.makeText(Match.this, "here", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Match.this,"Selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -62,11 +64,9 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
         searchableSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!First1){
                 Data item = List.get(position);
-                SecondId = item.getUser_id();}else{
-                    First1=false;
-                }
+                SecondId = item.getUser_id();
+                    Toast.makeText(Match.this,"Selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -92,6 +92,17 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
                         Toast.makeText(Match.this, "You Cannot Select Same Player", Toast.LENGTH_SHORT).show();
                     }else{
                         //Make Http Call to the function
+                        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://us-central1-badmintion-55f94.cloudfunctions.net/DataUpdate").newBuilder();
+                        urlBuilder.addQueryParameter("id1", firstId);
+                        urlBuilder.addQueryParameter("id2", SecondId);
+                        urlBuilder.addQueryParameter("point1", P1);
+                        urlBuilder.addQueryParameter("point2", P2);
+                        String url = urlBuilder.build().toString();
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .build();
+
+
                         Toast.makeText(Match.this, P1+" - "+P2, Toast.LENGTH_SHORT).show();
                         finish();
                     }
