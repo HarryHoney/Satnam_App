@@ -12,21 +12,31 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.example.harpreet.myapplication.Interface.iFirebaseLoadDone;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
+import com.jacksonandroidnetworking.JacksonParserFactory;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.Request;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
+import org.json.JSONArray;
 import org.w3c.dom.Text;
 
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 public class Match extends AppCompatActivity implements com.example.harpreet.myapplication.Interface.iFirebaseLoadDone {
 
@@ -43,6 +53,9 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match);
+
+        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
         //Spinner Property
         searchableSpinner1 = findViewById(R.id.spinner1);
@@ -92,15 +105,21 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
                         Toast.makeText(Match.this, "You Cannot Select Same Player", Toast.LENGTH_SHORT).show();
                     }else{
                         //Make Http Call to the function
-                        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://us-central1-badmintion-55f94.cloudfunctions.net/DataUpdate").newBuilder();
-                        urlBuilder.addQueryParameter("id1", firstId);
-                        urlBuilder.addQueryParameter("id2", SecondId);
-                        urlBuilder.addQueryParameter("point1", P1);
-                        urlBuilder.addQueryParameter("point2", P2);
-                        String url = urlBuilder.build().toString();
-                        Request request = new Request.Builder()
-                                .url(url)
-                                .build();
+                        AndroidNetworking.get("https://us-central1-badmintion-55f94.cloudfunctions.net/DataUpdate?point1="+P1+"&id1="+firstId+"&point2="+P2+"&id2="+SecondId)
+                                .setTag("Match")
+                                .setPriority(Priority.LOW)
+                                .build()
+                                .getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Toast.makeText(Match.this, "Data Added", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        Toast.makeText(Match.this, anError.toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
 
 
                         Toast.makeText(Match.this, P1+" - "+P2, Toast.LENGTH_SHORT).show();

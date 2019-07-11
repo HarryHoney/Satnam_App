@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.example.harpreet.myapplication.MainActivity;
 import com.example.harpreet.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jacksonandroidnetworking.JacksonParserFactory;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -36,6 +41,9 @@ public class register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
         mauth=FirebaseAuth.getInstance();
         reg_email=findViewById(R.id.signupemail);
@@ -61,7 +69,7 @@ public class register extends AppCompatActivity {
                 String mail=reg_email.getText().toString();
                 String Password=reg_password.getText().toString();
                 String confirm_Password=reg_confirm_password.getText().toString();
-                String Name = reg_name.getText().toString();
+                final String Name = reg_name.getText().toString();
 
                 if(!TextUtils.isEmpty(mail)&&!TextUtils.isEmpty(Password)&&!TextUtils.isEmpty(confirm_Password)&&!TextUtils.isEmpty(Name))
                 {
@@ -80,6 +88,22 @@ public class register extends AppCompatActivity {
                                     String id=user.getUid();
                                     //Add user to DashBoard with Name id matches=0 and points=0
                                     //Make a call to Nodejs code
+                                    //Make Http Call to the function
+                                    AndroidNetworking.get("https://us-central1-badmintion-55f94.cloudfunctions.net/firstEntry?name="+Name+"&id="+id)
+                                            .setTag("Entry")
+                                            .setPriority(Priority.LOW)
+                                            .build()
+                                            .getAsString(new StringRequestListener() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Toast.makeText(register.this, response, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onError(ANError anError) {
+                                                    Toast.makeText(register.this, anError.toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
 
                                     startActivity(new Intent(register.this,MainActivity.class));
                                     finish();
