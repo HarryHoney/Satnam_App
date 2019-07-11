@@ -22,6 +22,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.harpreet.myapplication.MainActivity;
 import com.example.harpreet.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,7 +41,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class setup extends AppCompatActivity {
 
-    private EditText Name;
     private CircleImageView circleImageView=null;//this is been add to make the image round and github dependence is been used for it
     private Uri inputUri=null;
     private Uri OuputUri=null;
@@ -64,54 +65,8 @@ public class setup extends AppCompatActivity {
 
         //getting id from the layout
         circleImageView = findViewById(R.id.profile_image);
-        Name=findViewById(R.id.name);
         setup_progressbar=findViewById(R.id.progressBar3);
         setup_progressbar.setVisibility(View.INVISIBLE);
-
-        if(circleImageView!=null)
-        {
-            setup_progressbar.setVisibility(View.VISIBLE);
-        }
-
-        //if the user is already logged in then we should retrieve the data of his profile to display so refering to the same collection and userID
-        //the below line will only make the connection and will consider as successful is the connection is establised with FireStore
-        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if(task.isSuccessful())
-                {
-                    if(task.getResult().exists())
-                    {
-
-                        //this will check whether the path existed or not for which the data retriveal is asked i.e ID is newly made or old
-                        //for old Id
-                        String name=task.getResult().getString("name");
-                        String image=task.getResult().getString("image");
-
-                        Name.setText(name);
-                        RequestOptions requestOptions=new RequestOptions();
-                        requestOptions.placeholder(R.drawable.default_image);
-                        Glide.with(setup.this).setDefaultRequestOptions(requestOptions).load(image).into(circleImageView);
-                        Glide.with(setup.this).load(image).into(circleImageView);
-                    }
-                    else
-                    {
-                        Toast.makeText(setup.this,"no data",Toast.LENGTH_LONG).show();
-                    }
-
-                }
-                else
-                {
-                    //if the connection wasn't properly establised with Firestore
-                    String error=task.getException().getMessage();
-                    Toast.makeText(setup.this,"Firestore Retrieve Error:"+error,Toast.LENGTH_LONG).show();
-                }
-
-                setup_progressbar.setVisibility(View.INVISIBLE);
-
-            }
-        });
 
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +115,7 @@ public class setup extends AppCompatActivity {
     private void doSomethingWithCroppedImage(Uri outputUri) {
         OuputUri=outputUri;
         String s=outputUri.toString();
-        Toast.makeText(this,s, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,s, Toast.LENGTH_SHORT).show();
         circleImageView.setImageURI(outputUri);
     }
 
@@ -169,63 +124,41 @@ public class setup extends AppCompatActivity {
 
         //Important thing to note the image is been stored to the storage(Firebase Storage) and its reference is been stored in the Database(Firestore or cloud)
 
-        final String user_name=Name.getText().toString();
-        if(TextUtils.isEmpty(user_name))
-        {
-            Toast.makeText(setup.this,"Please Enter the Name",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
             setup_progressbar.setVisibility(View.VISIBLE);
 
             user_id=mauth.getCurrentUser().getUid();//id of each image will be uniquely created
 
-            StorageReference image_path=storageReference.child("Profile_Image").child(user_id+".jpg");//storing the image to storage on specified path
-            image_path.putFile(OuputUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+            final StorageReference image_path=storageReference.child("Profile_Image").child(user_id+".jpg");//storing the image to storage on specified path
 
-                    if(task.isSuccessful())
-                    {
-                        //Toast.makeText(setup.this, "here1", Toast.LENGTH_SHORT).show();
-                        Uri download_uri=task.getResult().getUploadSessionUri();//in short getting the referal code where the image is been stored in storage
-                        //actual fuction was getdownloaduri
-                       // Toast.makeText(setup.this, download_uri.toString(), Toast.LENGTH_SHORT).show();
-                        HashMap<String,String> user_map=new HashMap<>();
-                        user_map.put("Name",user_name);
-                        user_map.put("Profile_Image",download_uri.toString());
+
+            image_path.putFile(OuputUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                image_path.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
 
                         //setting data to the firestore or cloud in below line
-                        firebaseFirestore.collection("Users").add(user_map).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        firebaseFirestore.collection("Score").document(user_id).update("image_id", uri.toString())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        setup_progressbar.setVisibility(View.INVISIBLE);
+                                        startActivity(new Intent(setup.this,MainActivity.class));
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful())
-                                {
-                                    Toast.makeText(setup.this,"Upload Complete",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(setup.this,MainActivity.class));
-                                    finish();
-                                }
-                                else
-                                {
-                                    String error=task.getException().getMessage();
-                                    Toast.makeText(setup.this,"Firestore Error:"+error,Toast.LENGTH_LONG).show();
-                                }
-
+                            public void onFailure(@NonNull Exception e) {
                                 setup_progressbar.setVisibility(View.INVISIBLE);
                             }
                         });
-
-                    }
-                    else
-                    {
-                        String error=task.getException().getMessage();
-                        Toast.makeText(setup.this,"Image Error:"+error,Toast.LENGTH_LONG).show();
-                        setup_progressbar.setVisibility(View.INVISIBLE);
                     }
 
-                }
-            });
+                        });
+                    }
 
-        }
+                });
+
+            }
     }
-}

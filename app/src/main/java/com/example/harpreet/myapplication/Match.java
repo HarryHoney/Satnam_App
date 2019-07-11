@@ -120,9 +120,7 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
                                         Toast.makeText(Match.this, anError.toString(), Toast.LENGTH_LONG).show();
                                     }
                                 });
-
-
-                        Toast.makeText(Match.this, P1+" - "+P2, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Match.this, P1+" - "+P2, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

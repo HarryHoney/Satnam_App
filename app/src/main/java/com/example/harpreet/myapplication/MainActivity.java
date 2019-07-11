@@ -1,5 +1,6 @@
 package com.example.harpreet.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -180,6 +181,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
 }

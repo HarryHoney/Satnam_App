@@ -1,5 +1,6 @@
 package com.example.harpreet.myapplication;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,10 +12,12 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapter.ViewHolder> {
 
     private OnitemClickListener listener;
+    private Context context;
 
     public FirebaseAdapter(@NonNull FirestoreRecyclerOptions options) {
         super(options);
@@ -25,6 +28,7 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View V=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_list_item,viewGroup,false);
+        context = viewGroup.getContext();
         return new ViewHolder(V);
     }
 
@@ -34,10 +38,10 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
         holder.name.setText(model.getName());
         holder.points.setText("Points:"+model.getPoints());
         holder.match.setText("Match:"+model.getMatches());
-        //String imagevalue="a"+model.getCurrent_image();
-        //     int id=holder.itemView.getResources().getIdentifier(imagevalue,"drawable", MainActivity.PACKAGE_NAME);
-        //Drawable res = holder.itemView.getResources().getDrawable(id);
-        //   holder.current_image.setImageResource(id);
+        String image_id = model.getImage_id();
+        Picasso.with(context)
+                .load(image_id)
+                .into(holder.person_image);
 
     }
 
@@ -49,7 +53,7 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public  TextView name;
+        public TextView name;
         public TextView points;
         public TextView match;
         public ImageView person_image;
@@ -59,6 +63,7 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
             name = itemView.findViewById(R.id.name);
             points = itemView.findViewById(R.id.points);
             match = itemView.findViewById(R.id.match);
+            person_image = itemView.findViewById(R.id.imageView2);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

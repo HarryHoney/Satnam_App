@@ -105,7 +105,7 @@ public class register extends AppCompatActivity {
                                                 }
                                             });
 
-                                    startActivity(new Intent(register.this,MainActivity.class));
+                                    startActivity(new Intent(register.this,setup.class));
                                     finish();
                                 }
                                 else
