@@ -14,6 +14,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapter.ViewHolder> {
 
     private OnitemClickListener listener;
@@ -35,13 +37,14 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Data model) {
 
-        holder.name.setText(model.getName());
+        if(!(model.getName().equals("Admin")&&model.getPoints().equals("1710")))
+        {holder.name.setText(model.getName());
         holder.points.setText("Points:"+model.getPoints());
         holder.match.setText("Match:"+model.getMatches());
         String image_id = model.getImage_id();
         Picasso.with(context)
                 .load(image_id)
-                .into(holder.person_image);
+                .into(holder.person_image);}
 
     }
 
@@ -56,7 +59,7 @@ public class FirebaseAdapter extends FirestoreRecyclerAdapter<Data,FirebaseAdapt
         public TextView name;
         public TextView points;
         public TextView match;
-        public ImageView person_image;
+        public CircleImageView person_image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

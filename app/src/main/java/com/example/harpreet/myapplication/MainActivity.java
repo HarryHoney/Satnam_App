@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Code for floating action button
         FloatingActionButton floatingActionButton=findViewById(R.id.floating_button);
+        if(mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2")){
+            floatingActionButton.show();
+        }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth=FirebaseAuth.getInstance();
         CollectionReference reference = firebaseFirestore.collection("/Score");
         Query query = reference
-                .limit(50).orderBy("points",Query.Direction.DESCENDING);
+                .limit(50). orderBy("order",Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Data> options = new FirestoreRecyclerOptions.Builder<Data>().
                 setQuery(query,Data.class)
                 .build();
