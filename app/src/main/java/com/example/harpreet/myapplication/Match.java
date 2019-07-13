@@ -105,7 +105,7 @@ public class Match extends AppCompatActivity implements com.example.harpreet.mya
                         Toast.makeText(Match.this, "You Cannot Select Same Player", Toast.LENGTH_SHORT).show();
                     }else{
                         //Make Http Call to the function
-                        AndroidNetworking.get("https://us-central1-badmintion-55f94.cloudfunctions.net/DataUpdate?point1="+P1+"&id1="+firstId+"&point2="+P2+"&id2="+SecondId)
+                        AndroidNetworking.get("PrivateSite?point1="+P1+"&id1="+firstId+"&point2="+P2+"&id2="+SecondId)
                                 .setTag("Match")
                                 .setPriority(Priority.LOW)
                                 .build()
