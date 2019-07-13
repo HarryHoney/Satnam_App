@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
              case(R.id.settings):
-                 if(mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2"))
+                 if(mauth.getUid().equals("Private Data"))
                 Toast.makeText(this, "Admin is not allowed in this section", Toast.LENGTH_SHORT).show();
                  else
                 startActivity(new Intent(MainActivity.this,setup.class));
