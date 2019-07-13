@@ -75,7 +75,7 @@ public class setup extends AppCompatActivity {
                 //before this use doing while installing from playstore
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(setup.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(setup.this, "Permission Denied!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(setup.this, "Please Try Again!", Toast.LENGTH_LONG).show();
                         //the toast message will appear for the deny for the first time but in below line the connection is established
                         ActivityCompat.requestPermissions(setup.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     } else {

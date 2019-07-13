@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //for adapter
     FirebaseFirestore firebaseFirestore =FirebaseFirestore.getInstance();
     public FirebaseAdapter adapter;
-
+    private FloatingActionButton floatingActionButton;
     public static int count=0;
     int[] drawablearray=new int[]{R.drawable.lee,R.drawable.lin,R.drawable.tau,R.drawable.mom};
     Timer _t;
@@ -83,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
         }, 5000, 5000);
 
         //Code for floating action button
-        FloatingActionButton floatingActionButton=findViewById(R.id.floating_button);
-        if(mauth!=null&&mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2")){
-            floatingActionButton.show();
-        }
+        floatingActionButton=findViewById(R.id.floating_button);
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.sign_out):
             {
                 mauth.signOut();
+                mauth=null;
                 startActivity(new Intent(this,login.class));
                 finish();
             }
@@ -146,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
+
+            if(mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2")){
+                floatingActionButton.show();}
             FirebaseFirestore firebaseFirestore;
             firebaseFirestore=FirebaseFirestore.getInstance();//to access database
             firebaseFirestore.collection("Users").document("Score").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
