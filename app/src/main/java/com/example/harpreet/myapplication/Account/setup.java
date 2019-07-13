@@ -139,7 +139,7 @@ public class setup extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
 
                         //setting data to the firestore or cloud in below line
-                        firebaseFirestore.collection("Score").document(user_id).update("image_id", uri.toString())
+                        firebaseFirestore.collection("Collection Name").document(user_id).update("image_id", uri.toString())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
