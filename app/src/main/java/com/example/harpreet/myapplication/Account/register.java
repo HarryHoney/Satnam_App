@@ -89,7 +89,7 @@ public class register extends AppCompatActivity {
                                     //Add user to DashBoard with Name id matches=0 and points=0
                                     //Make a call to Nodejs code
                                     //Make Http Call to the function
-                                    AndroidNetworking.get("https://us-central1-badmintion-55f94.cloudfunctions.net/firstEntry?name="+Name+"&id="+id)
+                                    AndroidNetworking.get("SecretSite?name="+Name+"&id="+id)
                                             .setTag("Entry")
                                             .setPriority(Priority.LOW)
                                             .build()
