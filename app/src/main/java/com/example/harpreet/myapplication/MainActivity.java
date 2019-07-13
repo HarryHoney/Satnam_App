@@ -82,10 +82,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000, 5000);
 
-
         //Code for floating action button
         FloatingActionButton floatingActionButton=findViewById(R.id.floating_button);
-        if(mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2")){
+        if(mauth!=null&&mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2")){
             floatingActionButton.show();
         }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
              case(R.id.settings):
-                Toast.makeText(this, "Setting selected", Toast.LENGTH_SHORT).show();
+                 if(mauth.getUid().equals("gS9G6duEBuaN9FRw2lURB2iZ1mr2"))
+                Toast.makeText(this, "Admin is not allowed in this section", Toast.LENGTH_SHORT).show();
+                 else
                 startActivity(new Intent(MainActivity.this,setup.class));
                 //do something
                 return true;
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 mauth.signOut();
                 startActivity(new Intent(this,login.class));
+                finish();
             }
             default:
                 return false;
